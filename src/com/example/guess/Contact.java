@@ -4,6 +4,13 @@ import java.util.Random;
 
 public class Contact {
 
+	public static class Mask {
+		public static final int NONE = 0;
+		public static final int GENDER = 1;
+		public static final int DISTANCE = 2;
+		public static final int NAME = 4;
+	}
+
 	public static final int MALE = 0;
 	public static final int FEMALE = 1;
 
@@ -20,8 +27,27 @@ public class Contact {
 	public String name;
 
 	public final boolean equals(final Contact contact) {
+		if (null == contact) return false;
+
+		if (contact.gender != gender) return false;
+		if (contact.distance != distance) return false;
+
 		if (name == null || name.isEmpty()) return false;
 		return name.equals(contact.name);
+	}
+
+	public final boolean equals(final Contact contact, final int mask) {
+		if (null == contact) return false;
+
+		if ((mask & Mask.GENDER == Mask.GENDER) && contact.gender != gender) return false;
+		if ((mask & Mask.DISTANCE == Mask.DISTANCE) && contact.distance != distance) return false;
+
+		if (mask & Mask.NAME == Mask.NAME) {
+			if (name == null || name.isEmpty()) return false;
+			return name.equals(contact.name);
+		}
+
+		return true;
 	}
 
 	public final String getGender() {

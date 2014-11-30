@@ -5,6 +5,7 @@ public class ContactStateMachine {
 	private final static int MAX_TRYING_TIMES = 3;
 
 	private int mTryingTime = 0;
+	private int mContactMask = 0;
 
 	private Contact mContact;
 
@@ -18,6 +19,10 @@ public class ContactStateMachine {
 
 	public final boolean isTimeout() {
 		return mTryingTime > MAX_TRYING_TIMES;
+	}
+
+	public final int getContactMask() {
+		return mContactMask;
 	}
 
 	public final String getHint(final Contact contact) {

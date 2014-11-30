@@ -11,10 +11,26 @@ public class ContactListAdapter extends BaseAdapter {
 
 	private Context mContext = null;
 	private ContactsManager mContactsManager = null;
+	private Contact mContact = null;
+	private int mContactMask = Contact.Mask.NONE;
 
 	public ContactListAdapter(Context context, ContactsManager contactsManager) {
 		mContext = context;
 		mContactsManager = contactsManager;
+	}
+
+	public void setContact(Contact contact) {
+		mContact = contact;
+	}
+
+	public void setContactMask(int mask) {
+		mContactMask = mask;
+		notifyDataSetChanged();
+	}
+
+	public void resetContact() {
+		mContact = null;
+		mContactMask = Contact.Mask.NONE;
 	}
 
 	@Override
@@ -49,6 +65,9 @@ public class ContactListAdapter extends BaseAdapter {
 			vh = (ViewHolder) convertView.getTag();
 		}
 
+		boolean enabled = mContact.equals(contact, mContactMask);
+		convertView.setEnabled(enabled);
+
 		vh.set(position, mContactsManager.getContact(position));
 
 		return convertView;
@@ -60,11 +79,19 @@ public class ContactListAdapter extends BaseAdapter {
 		private TextView distance;
 		private TextView name;
 
-		private void set(int position, final Contact contact) {
+		private void set(int position, final Contact contact, boolean enabled) {
+
 			index.setText("NO. " + position);
+			index.setEnabled(enabled);
+
 			gender.setText(contact.getGender());
+			gender.setEnabled(enabled);
+
 			distance.setText(contact.getDistance());
+			distance.setEnabled(enabled);
+
 			name.setText(contact.name);
+			name.setEnabled(enabled);
 		}
 	}
 }
